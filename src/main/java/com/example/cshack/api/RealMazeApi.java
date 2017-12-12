@@ -72,7 +72,7 @@ public class RealMazeApi implements MazeApi {
 
     @Override
     public MazeScanResponseDto scan() {
-
+        System.out.println("Doing scan");
         MazeInitRequestDto ir = getMazeInitRequestDto();
         ScanResponseDto r2 = this.restTemplate.postForObject("/Scan", ir, ScanResponseDto.class);
 
@@ -82,7 +82,7 @@ public class RealMazeApi implements MazeApi {
         r.getFields().put(Direction.Down, getType(r2.getDown()));
         r.getFields().put(Direction.Left, getType(r2.getLeft()));
         r.getFields().put(Direction.Right, getType(r2.getRight()));
-
+        System.out.println("Scan done");
         return r;
     }
 

@@ -85,6 +85,11 @@ public class MockApiImpl implements MazeApi {
 
     }
 
+    @Override
+    public MazeScanResponseDto scan() {
+        return null;
+    }
+
     private boolean isWithinBoundary(PointDto point) {
         return point.getX() >=0
                 && point.getY() >=0

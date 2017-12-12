@@ -91,12 +91,16 @@ public void dfs()
 
 
     private PointState getUnvisitedChildNode(PointState curentState){
-        for (Direction dir: Direction.values()) {
+        System.out.println("Before scan");
+        ArrayList<Direction> directions = checkAvailableNeighbours(curentState.getPointDto());
+        System.out.println("Directions:" + directions);
+        for (Direction dir: directions) {
             PointDto point = PointDto.getPointForDir(dir, curentState.getPointDto());
             FieldType mapField = map.getField(point.getX(), point.getY());
             switch (mapField) {
                 case Finish:
                 case Unknown:
+                case Floor:
                     MazeMoveResponseDto move = api.move(dir);
                     FieldType foundField = move.getFieldType();
                     map.mark(point.getX(), point.getY(), foundField);
@@ -116,6 +120,22 @@ public void dfs()
             }
         }
         return null;
+    }
+
+    private ArrayList<Direction> checkAvailableNeighbours(PointDto currentPoint) {
+        // call api
+        ArrayList<Direction> possibleMoves = new ArrayList<>();
+        MazeScanResponseDto scan = api.scan();
+        for(Map.Entry<Direction, FieldType> scanInfo: scan.fields.entrySet()) {
+            PointDto coords = PointDto.getPointForDir(scanInfo.getKey(), currentPoint);
+            if (map.getField(coords.getX(), coords.getY()).equals(FieldType.Unknown)) {
+                map.mark(coords.getX(), coords.getY(), scanInfo.getValue());
+            }
+            if (scanInfo.getValue().equals(FieldType.Floor)) {
+               possibleMoves.add(scanInfo.getKey());
+            }
+        }
+        return possibleMoves;
     }
 
     private void assertPositionAfterMove(PointDto point, MazeMoveResponseDto move) {
