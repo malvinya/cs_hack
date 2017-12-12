@@ -6,7 +6,7 @@ package com.example.cshack.model;
 public interface MazeApi {
 
     MazeInitResponseDto init(MazeInitRequestDto request);
-    MoveResponseDto move(MazeInitRequestDto request, Direction direction);
+    MazeMoveResponseDto move(Direction direction);
 
 }
 
