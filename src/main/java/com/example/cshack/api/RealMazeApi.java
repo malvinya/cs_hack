@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriTemplateHandler;
 
+import java.util.HashMap;
+
 /**
  * Created by Tomasz on 12.12.2017.
  */
@@ -70,6 +72,26 @@ public class RealMazeApi implements MazeApi {
 
     @Override
     public MazeScanResponseDto scan() {
-        return null;
+
+        MazeInitRequestDto ir = getMazeInitRequestDto();
+        ScanResponseDto r2 = this.restTemplate.postForObject("/Scan", ir, ScanResponseDto.class);
+
+        MazeScanResponseDto r = new MazeScanResponseDto();
+        r.setFields(new HashMap<>());
+        r.getFields().put(Direction.Up, getType(r2.getUp()));
+        r.getFields().put(Direction.Down, getType(r2.getDown()));
+        r.getFields().put(Direction.Left, getType(r2.getLeft()));
+        r.getFields().put(Direction.Right, getType(r2.getRight()));
+
+        return r;
+    }
+
+    public static FieldType getType(String d) {
+        if (d.equals("#"))
+            return FieldType.Wall;
+        if (d.equals(" "))
+            return FieldType.Floor;
+
+        return FieldType.Unknown;
     }
 }
