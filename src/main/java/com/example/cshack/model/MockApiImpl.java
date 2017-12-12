@@ -69,18 +69,18 @@ public class MockApiImpl implements MazeApi {
             if (field.equals(FieldType.Wall)) {
                 System.out.println(currentPosition);
 
-                return new MazeMoveResponseDto(currentPosition, "failure", "#");
+                return new MazeMoveResponseDto(currentPosition, "#", "failure");
             } else if (field.equals(FieldType.Floor) || field.equals(FieldType.Finish) || field.equals(FieldType.Start)) {
                 currentPosition = tryingToMoveToPoint;
                 System.out.println(currentPosition);
 
-                return new MazeMoveResponseDto(tryingToMoveToPoint, "success", " ");
+                return new MazeMoveResponseDto(tryingToMoveToPoint, " ","success");
             } else {
                 throw  new IllegalStateException();
             }
         } else {
             System.out.println("out:" + currentPosition);
-            return new MazeMoveResponseDto(currentPosition, "failure", "#");
+            return new MazeMoveResponseDto(currentPosition, "#", "failure");
         }
 
     }

@@ -71,7 +71,7 @@ public void dfs()
             PointState child = getUnvisitedChildNode(currentState);
             if(child != null)
             {
-                child.visited = true;
+                map.mark(child.getPointDto().getX(), child.getPointDto().getY(), FieldType.Visited);
                 //printNode(child);
                 q.push(child);
             }
