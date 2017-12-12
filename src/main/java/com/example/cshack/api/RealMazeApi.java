@@ -18,14 +18,11 @@ public class RealMazeApi implements MazeApi {
     private final RestTemplate restTemplate;
     private static final Logger LOG = LoggerFactory.getLogger(RealMazeApi.class);
 
-    @Value("${api.base.url}")
-    private String baseUrl;
+    private String baseUrl = "http://192.168.0.101:12345/maze-game";
 
-    @Value("${api.teamId}")
-    private String teamId;
+    private String teamId = "bvc234a6";
 
-    @Value("${api.mazeId}")
-    private String mazeId;
+    private String mazeId = "newbie";
 
     public RealMazeApi(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();

@@ -12,6 +12,11 @@ public class MazeMapImpl implements MazeMap {
 
     public MazeMapImpl() {
         map = new FieldType[1000][1000];
+        for (int i=0; i<map.length; i++) {
+            for (int j=0; j<map.length; j++) {
+                map[i][j] = FieldType.Unknown;
+            }
+        }
 
     }
 
@@ -29,7 +34,7 @@ public class MazeMapImpl implements MazeMap {
         StringBuilder b = new StringBuilder();
         for (int i=0; i<map.length; i++) {
             for (int j=0; j<map.length; j++) {
-                b.append(" "+map[i][j].name()+" ");
+                b.append(" "+map[j][i].name()+" ");
             }
             b.append("\n");
         }
@@ -62,5 +67,10 @@ public class MazeMapImpl implements MazeMap {
     public void markFinish(int i, int j) {
         map[i][j] = FieldType.Finish;
 
+    }
+
+    @Override
+    public void mark(int i, int j, FieldType fieldType) {
+        map[i][j] = fieldType;
     }
 }

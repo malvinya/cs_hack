@@ -10,7 +10,7 @@ public interface MazeMap {
     void markWall(int i, int j);
     void markStart(int i, int j);
     void markFinish(int i, int j);
-
+    void mark(int i, int j, FieldType fieldType);
 }
 
 
