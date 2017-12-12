@@ -27,10 +27,73 @@ public class MazeSolver {
 
     public void solve() {
 
+        /*
+public void dfs()
+{
+    //DFS uses Stack data structure
+    Stack s=new Stack();
+    s.push(this.rootNode);
+    rootNode.visited=true;
+    printNode(rootNode);
+    while(!s.isEmpty())
+    {
+        Node n=(Node)s.peek();
+        Node child=getUnvisitedChildNode(n);
+        if(child!=null)
+        {
+            child.visited=true;
+            printNode(child);
+            s.push(child);
+        }
+        else
+        {
+            s.pop();
+        }
+    }
+    //Clear visited property of nodes
+    clearNodes();
+}
+         */
+
+        Stack<PointState> q = new Stack<>();
+        map.markStart(start.getX(), start.getY());
+        map.markFinish(end.getX(), end.getY());
+
+        PointState pointState = new PointState(start, true, Direction.Up);
+        q.add(pointState);
+
+        log.info(pointState.toString());
+
+        while (!q.isEmpty()) {
+            PointState currentState = q.peek();
+            PointState child = getUnvisitedChildNode(currentState);
+            if(child != null)
+            {
+                child.visited = true;
+                //printNode(child);
+                q.push(child);
+            }
+            else
+            {
+                // return
+                PointState prev = q.pop();
+                Direction cdir = PointDto.getCounterDirection(prev.direction);
+                MazeMoveResponseDto move = api.move(cdir);
+                if (!q.isEmpty()) {
+                    PointState c = q.peek();
+                    assertPositionAfterMove(c.getPointDto(), move);
+                }
+            }
+        }
+    }
+
+
+    public void solve2() {
+
         Queue<PointState> q = new LinkedList<>();
         map.markStart(start.getX(), start.getY());
         map.markFinish(end.getX(), end.getY());
-        PointState pointState = new PointState(start, true);
+        PointState pointState = new PointState(start, true, Direction.Up);
         q.add(pointState);
         log.info(pointState.toString());
         while (!q.isEmpty()) {
@@ -45,14 +108,8 @@ public class MazeSolver {
     }
 
     private PointState getUnvisitedChildNode(PointState curentState){
-        Map<Direction, PointDto> points = new HashMap<>();
-        points.put(Direction.Up, new PointDto(curentState.getPointDto().getX(), curentState.getPointDto().getY()-1));
-        points.put(Direction.Down, new PointDto(curentState.getPointDto().getX(), curentState.getPointDto().getY()+1));
-        points.put(Direction.Left, new PointDto(curentState.getPointDto().getX()-1, curentState.getPointDto().getY()));
-        points.put(Direction.Right, new PointDto(curentState.getPointDto().getX()+1, curentState.getPointDto().getY()));
-
-        for (Direction dir: points.keySet()) {
-            PointDto point = points.get(dir);
+        for (Direction dir: Direction.values()) {
+            PointDto point = PointDto.getPointForDir(dir, curentState.getPointDto());
             FieldType field = map.getField(point.getX(), point.getY());
             switch (field) {
                 case Finish:
@@ -64,15 +121,22 @@ public class MazeSolver {
                         throw new RuntimeException("Finished!");
                         //return new PointState(point, false);
                     }
-            
+
                     if (move.IsSuccess()) {
-                        return new PointState(point, false);
+                        assertPositionAfterMove(point, move);
+                        return new PointState(point, false, dir);
                     }
                     break;
 
             }
         }
         return null;
+    }
+
+    private void assertPositionAfterMove(PointDto point, MazeMoveResponseDto move) {
+        if (move.getPosition().getX() != point.getX() || move.getPosition().getY() != point.getY()) {
+            throw new RuntimeException("Map not in sync with API");
+        }
     }
 }
 

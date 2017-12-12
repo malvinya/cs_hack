@@ -8,4 +8,5 @@ import lombok.Data;
 public class PointState {
     PointDto pointDto;
     boolean visited;
+    Direction direction;
 }
