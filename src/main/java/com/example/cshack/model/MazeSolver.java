@@ -1,5 +1,6 @@
 package com.example.cshack.model;
 
+import org.omg.CORBA.portable.ApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,17 +55,21 @@ public class MazeSolver {
             PointDto point = points.get(dir);
             FieldType field = map.getField(point.getX(), point.getY());
             switch (field) {
-                case Finish: {
-                    return new PointState(point, false);
-                }
-                case Unknown: {
+                case Finish:
+                case Unknown:
                     MazeMoveResponseDto move = api.move(dir);
                     map.mark(point.getX(), point.getY(), move.getFieldType());
+
+                    if (field == FieldType.Finish) {
+                        throw new RuntimeException("Finished!");
+                        //return new PointState(point, false);
+                    }
+            
                     if (move.IsSuccess()) {
                         return new PointState(point, false);
                     }
                     break;
-                }
+
             }
         }
         return null;
