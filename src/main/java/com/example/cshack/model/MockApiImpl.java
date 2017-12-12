@@ -90,6 +90,11 @@ public class MockApiImpl implements MazeApi {
         return null;
     }
 
+    @Override
+    public ScanDirectionResponseDto scanDirection(Direction direction) {
+        return null;
+    }
+
     private boolean isWithinBoundary(PointDto point) {
         return point.getX() >=0
                 && point.getY() >=0

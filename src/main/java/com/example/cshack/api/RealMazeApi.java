@@ -86,6 +86,25 @@ public class RealMazeApi implements MazeApi {
         return r;
     }
 
+    @Override
+    public ScanDirectionResponseDto scanDirection(Direction direction) {
+        LOG.info("Doing direction scan: {}", direction);
+        MazeInitRequestDto ir = getMazeInitRequestDto();
+        ScanResponseDto r2 = this.restTemplate.postForObject("/Scan" + direction , ir, ScanResponseDto.class);
+
+        ScanDirectionResponseDto r = new ScanDirectionResponseDto();
+        r.setDirection(direction);
+        int nums = 0;
+        switch (direction) {
+            case Up: nums = r2.getUp().replace("#", "").length(); break;
+            case Down: nums = r2.getDown().replace("#", "").length(); break;
+            case Left: nums = r2.getLeft().replace("#", "").length(); break;
+            case Right: nums = r2.getRight().replace("#", "").length(); break;
+        }
+        r.setNumFloors(nums);
+        return r;
+    }
+
     public static FieldType getType(String d) {
         if (d.equals("#"))
             return FieldType.Wall;
