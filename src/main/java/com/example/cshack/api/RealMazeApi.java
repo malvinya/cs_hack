@@ -67,4 +67,9 @@ public class RealMazeApi implements MazeApi {
 
         return moveResponse;
     }
+
+    @Override
+    public MazeScanResponseDto scan() {
+        return null;
+    }
 }
