@@ -1,14 +1,12 @@
 package com.example.cshack.model;
 
-import java.util.Arrays;
-
 /**
  * Created by malva on 12/12/17.
  */
 public class MazeMapImpl implements MazeMap {
 
     FieldType[][] map;
-
+    int maxI, maxJ;
 
     public MazeMapImpl() {
         map = new FieldType[1000][1000];
@@ -32,9 +30,9 @@ public class MazeMapImpl implements MazeMap {
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
-        for (int i=0; i<map.length; i++) {
-            for (int j=0; j<map.length; j++) {
-                b.append(" "+map[j][i].name()+" ");
+        for (int i=0; i <= maxI; i++) {
+            for (int j=0; j <= maxJ; j++) {
+                b.append(" "+map[j][i].rep()+" ");
             }
             b.append("\n");
         }
@@ -71,6 +69,9 @@ public class MazeMapImpl implements MazeMap {
 
     @Override
     public void mark(int i, int j, FieldType fieldType) {
+
         map[i][j] = fieldType;
+        maxI = Math.max(maxI, i);
+        maxJ = Math.max(maxJ, j);
     }
 }

@@ -1,6 +1,9 @@
 package com.example.cshack;
 
 import com.example.cshack.model.*;
+import com.example.cshack.tools.MapLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -9,20 +12,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CsHackApplication implements CommandLineRunner{
 
+	private final Logger LOG = LoggerFactory.getLogger(CsHackApplication.class);
+
 	@Autowired
 	MazeApi api;
+
+	@Autowired
+	MapLoader mapLoader;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CsHackApplication.class, args);
 	}
 
-	@Autowired
-	private MazeApi mazeApi;
 
 	@Override
 	public void run(String... strings) throws Exception {
 		System.out.println("Hello world");
-		MazeMap map = new MazeMapImpl();
 //		map.markWall(0,0);
 //		map.markWall(0,1);
 //		map.markWall(0,2);
@@ -48,8 +53,16 @@ public class CsHackApplication implements CommandLineRunner{
 //		map.markStart(1,1);
 //		map.markFinish(2,3);
 
-		MazeInitResponseDto responseDto = api.init();
+		MazeMap testMap = mapLoader.Load("map1.txt");
+		LOG.info("\n{}\n", testMap.toString());
 
+		RunAlgo(api);
+	}
+
+	private void RunAlgo(MazeApi api) {
+		MazeMap map = new MazeMapImpl();
+
+		MazeInitResponseDto responseDto = api.init();
 		PointDto start = responseDto.getStartPoint();
 		PointDto finish = responseDto.getEndPoint();
 		MazeSolver solver = new MazeSolver(start,map, finish, api);
