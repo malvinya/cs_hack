@@ -24,7 +24,7 @@ public class MazeMapImpl implements MazeMap {
         map = new FieldType[size][size];
         for (int i=0; i<size; i++) {
             for (int j=0; j<size; j++) {
-                map[i][j] = FieldType.Unknown;
+                map[i][j] = FieldType.Floor;
             }
         }
     }
