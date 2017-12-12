@@ -34,7 +34,7 @@ public class RealMazeApi implements MazeApi {
         this.restTemplate.setUriTemplateHandler(h);
     }
     @Override
-    public MazeInitResponseDto init(MazeInitRequestDto request) {
+    public MazeInitResponseDto init() {
 
         MazeInitRequestDto ir = getMazeInitRequestDto();
         //HttpEntity<MazeInitRequestDto> requestEntity = new HttpEntity<>(ir);
