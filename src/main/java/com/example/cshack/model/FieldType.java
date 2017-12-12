@@ -10,7 +10,8 @@ public enum FieldType {
     Wall("#"),
     Floor(" "),
     Start("A"),
-    Finish("B");
+    Finish("B"),
+    Visited("V");
 
     private String rep;
 

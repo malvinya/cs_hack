@@ -53,8 +53,11 @@ public class CsHackApplication implements CommandLineRunner{
 //		map.markStart(1,1);
 //		map.markFinish(2,3);
 
-		MazeMap testMap = mapLoader.Load("map1.txt");
-		LOG.info("\n{}\n", testMap.toString());
+		//MazeMap testMap = mapLoader.Load("map1.txt");
+		//LOG.info("\n{}\n", testMap.toString());
+
+		//MockApiImpl mockApi = new MockApiImpl();
+		//RunAlgo(mockApi);
 
 		RunAlgo(api);
 	}

@@ -20,6 +20,7 @@ public class MockApiImpl implements MazeApi {
 
     public MockApiImpl() {
         this.map = new MazeMapImpl(5);
+
 		map.markWall(0,0);
 		map.markWall(0,1);
 		map.markWall(0,2);

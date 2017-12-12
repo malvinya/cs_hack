@@ -1,5 +1,6 @@
 package com.example.cshack.model;
 
+import org.apache.commons.logging.Log;
 import org.omg.CORBA.portable.ApplicationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,8 @@ public void dfs()
          */
 
         Stack<PointState> q = new Stack<>();
-        map.markStart(start.getX(), start.getY());
+        //map.markStart(start.getX(), start.getY());
+        map.mark(start.getX(), start.getY(), FieldType.Visited);
         map.markFinish(end.getX(), end.getY());
 
         PointState pointState = new PointState(start, true, Direction.Up);
@@ -88,42 +90,25 @@ public void dfs()
     }
 
 
-    public void solve2() {
-
-        Queue<PointState> q = new LinkedList<>();
-        map.markStart(start.getX(), start.getY());
-        map.markFinish(end.getX(), end.getY());
-        PointState pointState = new PointState(start, true, Direction.Up);
-        q.add(pointState);
-        log.info(pointState.toString());
-        while (!q.isEmpty()) {
-            PointState currentState = q.remove();
-            PointState child = null;
-            while ((child = getUnvisitedChildNode(currentState)) != null) {
-                child.visited = true;
-                log.info(child.toString());
-                q.add(child);
-            }
-        }
-    }
-
     private PointState getUnvisitedChildNode(PointState curentState){
         for (Direction dir: Direction.values()) {
             PointDto point = PointDto.getPointForDir(dir, curentState.getPointDto());
-            FieldType field = map.getField(point.getX(), point.getY());
-            switch (field) {
+            FieldType mapField = map.getField(point.getX(), point.getY());
+            switch (mapField) {
                 case Finish:
                 case Unknown:
                     MazeMoveResponseDto move = api.move(dir);
-                    map.mark(point.getX(), point.getY(), move.getFieldType());
+                    FieldType foundField = move.getFieldType();
+                    map.mark(point.getX(), point.getY(), foundField);
 
-                    if (field == FieldType.Finish) {
+                    if (mapField == FieldType.Finish) {
                         throw new RuntimeException("Finished!");
                         //return new PointState(point, false);
                     }
 
                     if (move.IsSuccess()) {
                         assertPositionAfterMove(point, move);
+                        map.mark(point.getX(), point.getY(), FieldType.Visited);
                         return new PointState(point, false, dir);
                     }
                     break;

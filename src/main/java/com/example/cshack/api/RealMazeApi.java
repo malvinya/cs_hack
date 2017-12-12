@@ -21,7 +21,7 @@ public class RealMazeApi implements MazeApi {
 
     private String teamId = "bvc234a6";
 
-    private String mazeId = "newbie";
+    private String mazeId = "minos";
 
     public RealMazeApi(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplate = restTemplateBuilder.build();
@@ -36,7 +36,8 @@ public class RealMazeApi implements MazeApi {
         //HttpEntity<MazeInitRequestDto> requestEntity = new HttpEntity<>(ir);
 
         MazeInitResponseDto r = this.restTemplate.postForObject("/StartCompetition", ir, MazeInitResponseDto.class);
-        LOG.info("response: {}", r);
+        LOG.info("Init: {}", r);
+
         return r;
     }
 
@@ -61,6 +62,8 @@ public class RealMazeApi implements MazeApi {
 
         MazeInitRequestDto ir = getMazeInitRequestDto();
         MazeMoveResponseDto moveResponse = this.restTemplate.postForObject(method, ir, MazeMoveResponseDto.class);
+
+        LOG.info("Move: {}, Result: {}", direction, moveResponse.toString());
 
         return moveResponse;
     }

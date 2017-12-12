@@ -15,16 +15,16 @@ public class MazeMoveResponseDto {
     private String outcome;
 
     public FieldType getFieldType() {
-        if (details.equals("#")) {
+        if (outcome.equals("#")) {
             return FieldType.Wall;
         }
-        if (details.equals(" ")) {
+        if (outcome.equals(" ")) {
             return FieldType.Floor;
         }
         return FieldType.Unknown;
     }
 
     public boolean IsSuccess() {
-        return outcome.equals("success");
+        return details.equals("success");
     }
 }
