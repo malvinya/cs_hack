@@ -1,11 +1,13 @@
 package com.example.cshack.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
  * Created by Tomasz on 12.12.2017.
  */
 @Data
+@AllArgsConstructor
 public class MazeMoveResponseDto {
 
     private PointDto position;
