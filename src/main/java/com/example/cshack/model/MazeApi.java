@@ -7,6 +7,7 @@ public interface MazeApi {
 
     MazeInitResponseDto init();
     MazeMoveResponseDto move(Direction direction);
+    MazeScanResponseDto scan();
 
 }
 
